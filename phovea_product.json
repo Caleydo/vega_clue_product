@@ -23,7 +23,7 @@
   },
   {
     "type": "api",
-    "label": "phovea_server",
+    "label": "vega_clue_server",
     "repo": "phovea/phovea_server",
     "branch": "develop",
     "additional": [
