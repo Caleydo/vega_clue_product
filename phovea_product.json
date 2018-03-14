@@ -41,6 +41,11 @@
         "name": "phovea_data_mongo",
         "repo": "phovea/phovea_data_mongo",
         "branch": "develop"
+      },
+      {
+        "name": "phovea_clue",
+        "repo": "phovea/phovea_clue",
+        "branch": "thinkh/provenance_retrieval"
       }
     ],
     "data": [
