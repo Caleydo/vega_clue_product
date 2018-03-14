@@ -52,13 +52,6 @@
         "repo": "phovea/phovea_clue",
         "branch": "thinkh/provenance_retrieval"
       }
-    ],
-    "data": [
-      {
-        "type": "repo",
-        "repo": "Caleydo/vega_clue",
-        "branch": "master"
-      }
     ]
   }
 ]
