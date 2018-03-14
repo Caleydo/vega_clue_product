@@ -42,6 +42,13 @@
         "repo": "phovea/phovea_data_mongo",
         "branch": "develop"
       }
+    ],
+    "data": [
+      {
+        "type": "repo",
+        "repo": "Caleydo/vega_clue",
+        "branch": "master"
+      }
     ]
   }
 ]
