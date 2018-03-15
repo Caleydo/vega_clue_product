@@ -17,7 +17,8 @@
       },
       {
         "name": "phovea_ui",
-        "repo": "phovea/phovea_ui"
+        "repo": "phovea/phovea_ui",
+        "branch": "develop"
       }
     ]
   },
