@@ -8,7 +8,7 @@
       {
         "name": "phovea_core",
         "repo": "phovea/phovea_core",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "thinkh/provenance_retrieval_update_dependencies"
       },
       {
         "name": "phovea_clue",
