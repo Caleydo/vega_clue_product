@@ -18,7 +18,7 @@
       {
         "name": "phovea_ui",
         "repo": "phovea/phovea_ui",
-        "branch": "develop"
+        "branch": "v2.0.0"
       }
     ]
   },
@@ -26,22 +26,22 @@
     "type": "api",
     "label": "vega_clue_server",
     "repo": "phovea/phovea_server",
-    "branch": "develop",
+    "branch": "v2.0.0",
     "additional": [
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "develop"
+        "branch": "v2.0.3"
       },
       {
         "name": "phovea_data_redis",
         "repo": "phovea/phovea_data_redis",
-        "branch": "develop"
+        "branch": "v2.0.0"
       },
       {
         "name": "phovea_data_mongo",
         "repo": "phovea/phovea_data_mongo",
-        "branch": "develop"
+        "branch": "v2.0.0"
       },
       {
         "name": "phovea_clue",
