@@ -298,6 +298,11 @@ function yo(generator, options, cwd, args) {
   // call yo internally
   const yeomanEnv = yeoman.createEnv([], {cwd, env}, quiet ? createQuietTerminalAdapter() : undefined);
   yeomanEnv.register(require.resolve('generator-phovea/generators/' + generator), 'phovea:' + generator);
+
+  // register default generators that are used on startup any phovea generator since v2.0.0
+  yeomanEnv.register(require.resolve('generator-phovea/generators/check-node-version'), 'phovea:check-node-version');
+  yeomanEnv.register(require.resolve('generator-phovea/generators/_check-own-version'), 'phovea:_check-own-version');
+
   const _args = Array.isArray(args) ? args.join(' ') : args || '';
   return new Promise((resolve, reject) => {
     try {
