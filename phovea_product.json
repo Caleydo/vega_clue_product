@@ -3,7 +3,7 @@
     "type": "web",
     "label": "vega_clue",
     "repo": "Caleydo/vega_clue",
-    "branch": "master",
+    "branch": "develop",
     "additional": [
       {
         "name": "phovea_core",
