@@ -18,7 +18,12 @@
       {
         "name": "phovea_ui",
         "repo": "phovea/phovea_ui",
-        "branch": "develop"
+        "branch": "thinkh/provenance_retrieval"
+      },
+      {
+        "name": "phovea_security_flask",
+        "repo": "phovea/phovea_security_flask",
+        "branch": "thinkh/provenance_retrieval"
       }
     ]
   },
@@ -31,7 +36,7 @@
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "develop"
+        "branch": "thinkh/provenance_retrieval"
       },
       {
         "name": "phovea_data_redis",
@@ -53,7 +58,7 @@
       {
         "type": "repo",
         "repo": "Caleydo/vega_clue",
-        "branch": "master"
+        "branch": "develop"
       }
     ]
   }
