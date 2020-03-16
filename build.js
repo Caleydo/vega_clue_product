@@ -297,7 +297,6 @@ function yo(generator, options, cwd, args) {
   const yeoman = require('yeoman-environment');
   // call yo internally
   const yeomanEnv = yeoman.createEnv([], {cwd, env}, quiet ? createQuietTerminalAdapter() : undefined);
-
   const _args = Array.isArray(args) ? args.join(' ') : args || '';
   return new Promise((resolve, reject) => {
     try {
@@ -636,6 +635,10 @@ function installWebDependencies(p) {
   return npm(p.additional.length > 0 ? p.tmpDir : (`${p.tmpDir}/${p.name}`), 'install');
 }
 
+function showWebDependencies(p) {
+  return npm(p.additional.length > 0 ? p.tmpDir : (`${p.tmpDir}/${p.name}`), 'list --depth=1');
+}
+
 function cleanUpWebDependencies(p) {
   return fs.emptyDirAsync(p.additional.length > 0 ? `${p.tmpDir}/node_modules` : (`${p.tmpDir}/${p.name}/node_modules`));
 }
@@ -671,6 +674,10 @@ function installPythonTestDependencies(p) {
   console.log(chalk.yellow('create test environment'));
   return spawn('pip', 'install --no-cache-dir -r requirements.txt', {cwd: p.tmpDir})
     .then(() => spawn('pip', 'install --no-cache-dir -r requirements_dev.txt', {cwd: p.tmpDir}));
+}
+
+function showPythonTestDependencies(p) {
+  return spawn('pip', 'list', {cwd: p.tmpDir});
 }
 
 function buildServer(p) {
@@ -799,12 +806,16 @@ if (require.main === module) {
     }
 
     const needsWorskpace = (isWeb && hasAdditional) || isServer;
-    steps[`prepare:${suffix}`] = needsWorskpace ? () => catchProductBuild(p, createWorkspace(p)) : null;
+    if(needsWorskpace) {
+      steps[`prepare:${suffix}`] = () => catchProductBuild(p, createWorkspace(p));
+    }
 
     if (isWeb) {
       steps[`install:${suffix}`] = () => catchProductBuild(p, installWebDependencies(p));
+      steps[`show:${suffix}`] = () => catchProductBuild(p, showWebDependencies(p));
     } else { // server
       steps[`install:${suffix}`] = argv.skipTests ? () => null : () => catchProductBuild(p, installPythonTestDependencies(p));
+      steps[`show:${suffix}`] = () => catchProductBuild(p, showPythonTestDependencies(p));
     }
     steps[`test:${suffix}`] = isWeb && hasAdditional ? () => catchProductBuild(p, resolvePluginTypes(p).then(() => testWebAdditionals(p))) : () => null;
     steps[`build:${suffix}`] = isWeb ? () => catchProductBuild(p, resolvePluginTypes(p).then(() => buildWeb(p))) : () => catchProductBuild(p, resolvePluginTypes(p).then(() => buildServer(p)));
@@ -813,8 +824,12 @@ if (require.main === module) {
     steps[`image:${suffix}`] = () => catchProductBuild(p, buildDockerImage(p));
     steps[`save:${suffix}`] = () => catchProductBuild(p, dockerSave(p.image, `build/${p.label}_image.tar.gz`));
 
-    subSteps.push(`prepare:${suffix}`);
+    if(needsWorskpace) {
+      subSteps.push(`prepare:${suffix}`);
+    }
     subSteps.push(`install:${suffix}`);
+    subSteps.push(`show:${suffix}`);
+
     if (!argv.skipTests) {
       subSteps.push(`test:${suffix}`);
     }
@@ -838,7 +853,7 @@ if (require.main === module) {
   // create some meta steps
   {
     const stepNames = Object.keys(steps);
-    for (const meta of ['clone', 'prepare', 'build', 'test', 'postbuild', 'image', 'product', 'install']) {
+    for (const meta of ['clone', 'prepare', 'build', 'test', 'postbuild', 'image', 'product', 'install', 'show']) {
       const sub = stepNames.filter((d) => d.startsWith(`${meta}:`));
       if (sub.length <= 0) {
         continue;
