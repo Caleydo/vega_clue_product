@@ -3,7 +3,7 @@
     "type": "web",
     "label": "vega_clue",
     "repo": "Caleydo/vega_clue",
-    "branch": "update_dep_req",
+    "branch": "develop",
     "additional": [
       {
         "name": "phovea_core",
@@ -18,7 +18,12 @@
       {
         "name": "phovea_ui",
         "repo": "phovea/phovea_ui",
-        "branch": "develop"
+        "branch": "thinkh/provenance_retrieval"
+      },
+      {
+        "name": "phovea_security_flask",
+        "repo": "phovea/phovea_security_flask",
+        "branch": "thinkh/provenance_retrieval"
       }
     ]
   },
@@ -26,12 +31,12 @@
     "type": "api",
     "label": "vega_clue_server",
     "repo": "phovea/phovea_server",
-    "branch": "v2.4.0",
+    "branch": "develop",
     "additional": [
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "develop"
+        "branch": "thinkh/provenance_retrieval"
       },
       {
         "name": "phovea_data_redis",
@@ -53,7 +58,7 @@
       {
         "type": "repo",
         "repo": "Caleydo/vega_clue",
-        "branch": "update_dep_req"
+        "branch": "develop"
       }
     ]
   }
