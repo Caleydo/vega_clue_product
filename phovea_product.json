@@ -8,12 +8,12 @@
       {
         "name": "phovea_core",
         "repo": "phovea/phovea_core",
-        "branch": "stoiber/provenance_retrieval"
+        "branch": "thinkh/provenance_retrieval"
       },
       {
         "name": "phovea_clue",
         "repo": "phovea/phovea_clue",
-        "branch": "stoiber/provenance_retrieval"
+        "branch": "thinkh/provenance_retrieval"
       },
       {
         "name": "phovea_ui",
@@ -51,7 +51,7 @@
       {
         "name": "phovea_clue",
         "repo": "phovea/phovea_clue",
-        "branch": "stoiber/provenance_retrieval"
+        "branch": "thinkh/provenance_retrieval"
       }
     ],
     "data": [
