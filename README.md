@@ -1,7 +1,6 @@
-vega_clue_product [![Phovea][phovea-image]][phovea-url] [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+vega_clue_product 
 =====================
-
-
+[![Phovea][phovea-image]][phovea-url] [![Build Status][circleci-image]][circleci-url]
 
 Installation
 ------------
@@ -36,9 +35,5 @@ This repository is part of **[Phovea](http://phovea.caleydo.org/)**, a platform 
 
 [phovea-image]: https://img.shields.io/badge/Phovea-Product-FABC15.svg
 [phovea-url]: https://phovea.caleydo.org
-[npm-image]: https://badge.fury.io/js/vega_clue_product.svg
-[npm-url]: https://npmjs.org/package/vega_clue_product
 [circleci-image]: https://circleci.com/gh/Caleydo/vega_clue_product.svg?style=shield
 [circleci-url]: https://circleci.com/gh/Caleydo/vega_clue_product
-[daviddm-image]: https://david-dm.org/Caleydo/vega_clue_product/status.svg
-[daviddm-url]: https://david-dm.org/Caleydo/vega_clue_product
