@@ -3,27 +3,27 @@
     "type": "web",
     "label": "vega_clue",
     "repo": "Caleydo/vega_clue",
-    "branch": "develop",
+    "branch": "vstoiber/update_dependencies",
     "additional": [
       {
         "name": "phovea_core",
         "repo": "phovea/phovea_core",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "vstoiber/update_dependencies_provenance_retrieval"
       },
       {
         "name": "phovea_clue",
         "repo": "phovea/phovea_clue",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "vstoiber/update_dependencies_provenance_retrieval"
       },
       {
         "name": "phovea_ui",
         "repo": "phovea/phovea_ui",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "vstoiber/update_dependencies_provenance_retrieval"
       },
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "vstoiber/update_dependencies_provenance_retrieval"
       }
     ]
   },
@@ -31,27 +31,27 @@
     "type": "api",
     "label": "vega_clue_server",
     "repo": "phovea/phovea_server",
-    "branch": "develop",
+    "branch": "vstoiber/logging_behaviour_and_dependencies",
     "additional": [
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "vstoiber/update_dependencies_provenance_retrieval"
       },
       {
         "name": "phovea_data_redis",
         "repo": "phovea/phovea_data_redis",
-        "branch": "develop"
+        "branch": "vstoiber/update_requirements"
       },
       {
         "name": "phovea_data_mongo",
         "repo": "phovea/phovea_data_mongo",
-        "branch": "develop"
+        "branch": "vstoiber/update_requirements"
       },
       {
         "name": "phovea_clue",
         "repo": "phovea/phovea_clue",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "vstoiber/update_dependencies_provenance_retrieval"
       }
     ]
   }
