@@ -1,16 +1,15 @@
 version: 2.1
 
 executors:
-  node-executor:
+  python-executor:
     working_directory: ~/phovea
     docker:
-      - image: circleci/node:12.13-buster-browsers
+      - image: circleci/python:3.7-buster-node-browsers # for node version see Dockerfile on https://hub.docker.com/r/circleci/python
 jobs:
   build:
-    executor: node-executor
+    executor: python-executor
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           name: Show Node.js and npm version
           command: |
@@ -21,90 +20,65 @@ jobs:
           command: |
             python --version
             pip --version
+      - run:
+          name: Install Docker packages from docker_packages.txt
+          command: |
+            (!(test -f docker_packages.txt) || (cat docker_packages.txt | xargs sudo apt-get install -y))
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements_dev.txt" }}
       - run:
-          name: Install npm dependencies
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Show installed npm dependencies
-          command: npm list --depth=1 || true
-      - restore_cache:
-          key: awscli-1.18.134
-      - run:
-          name: Install AWS CLI
+          name: Install pip requirements
           command: |
             virtualenv ~/venv
             . ~/venv/bin/activate
-            pip install awscli==1.18.134
+            pip install -r requirements_dev.txt
+            pip install -r requirements.txt
       - save_cache:
-          key: awscli-1.18.134
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements_dev.txt" }}
           paths:
           - ~/venv
       - run:
-          name: Login AWS ECR and DockerHub
+          name: Force an update of pip dependencies from git repositories # not sure if this is working ?
           command: |
             . ~/venv/bin/activate
-            cat > ~/.dockercfg \<< EOF
-            {
-              "https://index.docker.io/v1/": {
-                "auth": "$DOCKER_AUTH"
-              }
-            }
-            EOF
-            export AWS_DEFAULT_REGION=eu-central-1
-            login="$(aws ecr get-login --no-include-email)"
-            ${login}
-      - deploy:
-          name: Build and deploy
+            pip install --upgrade --upgrade-strategy=only-if-needed -r requirements.txt
+      - run:
+          name: Show installed pip packages
+          command: pip list || true
+      - run:
+          name: Build
           command: |
             . ~/venv/bin/activate
-            case "${CIRCLE_BRANCH}${CIRCLE_TAG}" in
-            master)
-              awsTag="latest"
-              ;;
-            *)
-              awsTag="${CIRCLE_BRANCH//\//_}${CIRCLE_TAG}" # replace `/` with `_` in branch name
-              ;;
-            esac
-            echo "using tag: --${awsTag}--"
-            node build.js --injectVersion --skipSaveImage --noDefaultTags --pushExtra=${awsTag} --pushTo=922145058410.dkr.ecr.eu-central-1.amazonaws.com/caleydo
+            npm run dist
       - store_artifacts:
-          path: build
-          destination: build
-      - deploy:
-          name: Cleanup untagged AWS repositories
+          path: dist
+          destination: dist
+      - persist_to_workspace:
+          root: ~/phovea
+          paths: .
+  publish:
+    executor: python-executor
+    steps:
+      - attach_workspace:
+          at: ~/phovea
+      - run:
+          name: Install twine
+          command: |
+            virtualenv ~/venv
+            . ~/venv/bin/activate
+            pip install twine
+      - run:
+          name: Authentication
+          command:  |
+            echo -e "[pypi]" >> ~/.pypirc
+            echo -e "repository = $PYPI_REPOSITORY" >> ~/.pypirc
+            echo -e "username = $PYPI_USERNAME" >> ~/.pypirc
+            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+      - run:
+          name: Publish package
           command: |
             . ~/venv/bin/activate
-            export AWS_DEFAULT_REGION=eu-central-1
-            baseName=${CIRCLE_PROJECT_REPONAME%_product}
-            # list repos filter to just the one of this product and delete untagged ones
-            aws ecr describe-repositories --output text | cut -f5 | grep "caleydo/${baseName}" | while read line; do aws ecr list-images --repository-name $line --filter tagStatus=UNTAGGED --query 'imageIds[*]' --output text | while read imageId; do aws ecr batch-delete-image --output text --repository-name $line --image-ids imageDigest=$imageId; done; done
-      - deploy:
-          name: Restart AWS task # assumes the task definition is called <reponame>-<branch>
-          command: |
-            . ~/venv/bin/activate
-            export AWS_DEFAULT_REGION=eu-central-1
-            # cleanup name by removing the _product suffix
-            baseName=${CIRCLE_PROJECT_REPONAME%_product}
-            awsFamily="${baseName}-${CIRCLE_BRANCH//\//_}" # replace `/` with `_` in branch name
-            echo "awsFamily --${awsFamily}--"
-            tasksExists=$(aws --output text ecs list-task-definitions --family-prefix ${awsFamily})
-            echo "existsTaskDefinition? --${tasksExists}--"
-            if [ ! -z "$tasksExists" ]; then
-              isTaskRunning=$(aws --output text ecs list-tasks --cluster caleydo --family ${awsFamily})
-              echo "isTaskRunning? --${isTaskRunning}--"
-              if [ ! -z "$isTaskRunning" ]; then
-                taskId=$(echo "${isTaskRunning}" | cut -f2)
-                echo "taskId--${taskId}--"
-                aws --output text ecs stop-task --cluster caleydo --task ${taskId}
-              fi
-              aws --output text ecs run-task --cluster caleydo --task-definition ${awsFamily} --started-by CircleCIAutoUpdate
-            fi
+            twine upload dist/*
 workflows:
   version: 2.1
 #  build-nightly:
@@ -117,15 +91,25 @@ workflows:
 #                - develop
 #    jobs:
 #      - build
-  build-branch:
+  build-branches-only:
     jobs:
       - build:
           filters:
             tags:
-              ignore: /^v.*/
-  build-tag:
+              ignore: /.*/
+  build-publish-tag:
     jobs:
       - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - publish:
+          context:
+              - org-public
+          requires:
+              - build
           filters:
             branches:
               ignore: /.*/
