@@ -4,7 +4,7 @@ executors:
   node-executor:
     working_directory: ~/phovea
     docker:
-      - image: circleci/node:12.13-buster-browsers
+      - image: circleci/python:3.7-buster-node-browsers # for node version see Dockerfile on https://hub.docker.com/r/circleci/python
 
 orbs:
   aws-cli: circleci/aws-cli@1.4.0
@@ -20,6 +20,11 @@ jobs:
           command: |
             node -v
             npm -v
+      - run:
+          name: Show Python and pip version
+          command: |
+            python --version
+            pip --version            
       - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "package.json" }}      
       - run:
