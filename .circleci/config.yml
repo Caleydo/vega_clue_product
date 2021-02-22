@@ -31,7 +31,6 @@ jobs:
       - deploy:
           name: Build and deploy
           command: |
-            . ~/venv/bin/activate
             case "${CIRCLE_BRANCH}${CIRCLE_TAG}" in
             master)
               awsTag="latest"
@@ -48,14 +47,12 @@ jobs:
       - deploy:
           name: Cleanup untagged AWS repositories
           command: |
-            . ~/venv/bin/activate
             baseName=${CIRCLE_PROJECT_REPONAME%_product}
             # list repos filter to just the one of this product and delete untagged ones
             aws ecr describe-repositories --output text | cut -f5 | grep "caleydo/${baseName}" | while read line; do aws ecr list-images --repository-name $line --filter tagStatus=UNTAGGED --query 'imageIds[*]' --output text | while read imageId; do aws ecr batch-delete-image --output text --repository-name $line --image-ids imageDigest=$imageId; done; done
       - deploy:
           name: Restart AWS task # assumes the task definition is called <reponame>-<branch>
           command: |
-            . ~/venv/bin/activate
             # cleanup name by removing the _product suffix
             baseName=${CIRCLE_PROJECT_REPONAME%_product}
             awsFamily="${baseName}-${CIRCLE_BRANCH//\//_}" # replace `/` with `_` in branch name
