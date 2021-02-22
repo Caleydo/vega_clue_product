@@ -15,7 +15,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      
-      - aws-ecr/login
+      - aws-ecr/ecr-login
       - run:
           name: Show Node.js and npm version
           command: |
