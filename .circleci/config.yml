@@ -4,13 +4,13 @@ version: 2.1
 
 orbs:
   aws-ecr: circleci/aws-ecr@6.14.0
-  node: circleci/node:12.13-buster-browsers
+  node: circleci/node@4.1.1
 
 jobs:
   build:
     executor:
       name: node/default # From the node orb, provides a nodejs docker image
-      tag: '12.13-buster-browsers'  
+      tag: '12.13'  
     steps:
       - checkout
       - aws-cli/setup
