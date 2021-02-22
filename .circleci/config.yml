@@ -7,7 +7,7 @@ executors:
       - image: circleci/python:3.7-buster-node-browsers # for node version see Dockerfile on https://hub.docker.com/r/circleci/python
 
 orbs:
-  aws-cli: circleci/aws-cli@1.4.0
+  aws-ecr: circleci/aws-ecr@6.15.3
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      
-      - aws-cli/setup
+      - aws-ecr/login
       - run:
           name: Show Node.js and npm version
           command: |
