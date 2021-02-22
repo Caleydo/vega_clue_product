@@ -14,6 +14,7 @@ jobs:
     executor: node-executor
     steps:
       - checkout
+      - setup_remote_docker      
       - aws-cli/setup
       - run:
           name: Show Node.js and npm version
