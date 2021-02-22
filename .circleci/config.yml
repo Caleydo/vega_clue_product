@@ -8,6 +8,9 @@ orbs:
 
 jobs:
   build:
+    executor:
+      name: node/default # From the node orb, provides a nodejs docker image
+      tag: '12.13-buster-browsers'  
     steps:
       - checkout
       - aws-cli/setup
