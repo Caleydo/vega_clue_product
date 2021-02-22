@@ -1,20 +1,33 @@
-
-
 version: 2.1
+
+executors:
+  node-executor:
+    working_directory: ~/phovea
+    docker:
+      - image: circleci/node:12.13-buster-browsers
 
 orbs:
   aws-cli: circleci/aws-cli@1.4.0
-  node: circleci/node@4.1.1
 
 jobs:
   build:
-    executor:
-      name: node/default # From the node orb, provides a nodejs docker image
-      tag: '12.13'  
+    executor: node-executor
     steps:
       - checkout
       - aws-cli/setup
-      - node/install-packages
+      - run:
+          name: Show Node.js and npm version
+          command: |
+            node -v
+            npm -v
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "package.json" }}      
+      - run:
+          name: Install npm dependencies
+          command: npm install
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "package.json" }}
+          paths: ./node_modules          
       - deploy:
           name: Build and deploy
           command: |
@@ -36,7 +49,6 @@ jobs:
           name: Cleanup untagged AWS repositories
           command: |
             . ~/venv/bin/activate
-            export AWS_DEFAULT_REGION=eu-central-1
             baseName=${CIRCLE_PROJECT_REPONAME%_product}
             # list repos filter to just the one of this product and delete untagged ones
             aws ecr describe-repositories --output text | cut -f5 | grep "caleydo/${baseName}" | while read line; do aws ecr list-images --repository-name $line --filter tagStatus=UNTAGGED --query 'imageIds[*]' --output text | while read imageId; do aws ecr batch-delete-image --output text --repository-name $line --image-ids imageDigest=$imageId; done; done
@@ -44,7 +56,6 @@ jobs:
           name: Restart AWS task # assumes the task definition is called <reponame>-<branch>
           command: |
             . ~/venv/bin/activate
-            export AWS_DEFAULT_REGION=eu-central-1
             # cleanup name by removing the _product suffix
             baseName=${CIRCLE_PROJECT_REPONAME%_product}
             awsFamily="${baseName}-${CIRCLE_BRANCH//\//_}" # replace `/` with `_` in branch name
