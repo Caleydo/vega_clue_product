@@ -3,27 +3,27 @@
     "type": "web",
     "label": "vega_clue",
     "repo": "Caleydo/vega_clue",
-    "branch": "develop",
+    "branch": "v2.0.0",
     "additional": [
       {
         "name": "phovea_core",
         "repo": "phovea/phovea_core",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "v8.0.0"
       },
       {
         "name": "phovea_clue",
         "repo": "phovea/phovea_clue",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "v9.0.0"
       },
       {
         "name": "phovea_ui",
         "repo": "phovea/phovea_ui",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "v8.0.0"
       },
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "v8.0.0"
       }
     ]
   },
@@ -31,27 +31,27 @@
     "type": "api",
     "label": "vega_clue_server",
     "repo": "phovea/phovea_server",
-    "branch": "develop",
+    "branch": "v7.2.0",
     "additional": [
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "v8.0.0"
       },
       {
         "name": "phovea_data_redis",
         "repo": "phovea/phovea_data_redis",
-        "branch": "develop"
+        "branch": "v8.0.0"
       },
       {
         "name": "phovea_data_mongo",
         "repo": "phovea/phovea_data_mongo",
-        "branch": "develop"
+        "branch": "v8.0.0"
       },
       {
         "name": "phovea_clue",
         "repo": "phovea/phovea_clue",
-        "branch": "thinkh/provenance_retrieval"
+        "branch": "v9.0.0"
       }
     ]
   }
