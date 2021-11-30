@@ -8,22 +8,22 @@
       {
         "name": "phovea_core",
         "repo": "phovea/phovea_core",
-        "branch": "v8.0.0"
+        "branch": "thinkh/provenance_retrieval"
       },
       {
         "name": "phovea_clue",
         "repo": "phovea/phovea_clue",
-        "branch": "v9.0.0"
+        "branch": "thinkh/provenance_retrieval"
       },
       {
         "name": "phovea_ui",
         "repo": "phovea/phovea_ui",
-        "branch": "v8.0.0"
+        "branch": "thinkh/provenance_retrieval"
       },
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "v8.0.0"
+        "branch": "thinkh/provenance_retrieval"
       }
     ]
   },
@@ -36,7 +36,7 @@
       {
         "name": "phovea_security_flask",
         "repo": "phovea/phovea_security_flask",
-        "branch": "v8.0.0"
+        "branch": "thinkh/provenance_retrieval"
       },
       {
         "name": "phovea_data_redis",
@@ -51,7 +51,7 @@
       {
         "name": "phovea_clue",
         "repo": "phovea/phovea_clue",
-        "branch": "v9.0.0"
+        "branch": "thinkh/provenance_retrieval"
       }
     ]
   }
